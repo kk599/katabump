@@ -590,7 +590,7 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
 (async () => {
   // Random delay for scheduled runs (anti-detection)
   if (GITHUB_EVENT_NAME === 'schedule') {
-    const maxDelaySec = 3 * 60 * 60;
+    const maxDelaySec = 3 * 60 * 6;
     const delaySec = Math.floor(Math.random() * maxDelaySec);
     const hours = Math.floor(delaySec / 3600);
     const minutes = Math.floor((delaySec % 3600) / 60);
@@ -749,8 +749,9 @@ async function solveAltchaIfPresent(page, stageName = "Renew阶段", maxAttempts
 
             console.log('正在寻找 "See" 链接...');
             try {
+                await page.waitForTimeout(15000);
                 await page.getByRole('link', { name: 'See' }).first().waitFor({ timeout: 15000 });
-                await page.waitForTimeout(1000);
+                await page.waitForTimeout(10000);
                 await page.getByRole('link', { name: 'See' }).first().click();
             } catch (e) {
                 console.log('未找到 "See" 按钮。');
